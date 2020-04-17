@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import DropZone from "react-dropzone";
 import { Icon } from "antd";
 import Axios from "axios";
-import { set } from "mongoose";
 const FileUpload = props => {
   const [Images, setImages] = useState([]);
   const onDrop = files => {
@@ -43,7 +42,7 @@ const FileUpload = props => {
             }}
             {...getRootProps()}
           >
-            <input {...getInputProps()} />
+            <input multiple {...getInputProps()} />
             <Icon type="plus" style={{ fontSize: "3rem" }} />
           </div>
         )}
@@ -58,9 +57,9 @@ const FileUpload = props => {
       >
           {
               Images.map((image,ind)=>(
-                <div onClick={()=>deleteImage(image)}>
+                <div onClick={()=>deleteImage(image)}
+                key={ind}>
                     <img 
-                    key={ind}
                     src={`http://localhost:5000/${image}`} 
                     alt={`productImage-${ind}`} 
                     style={{   

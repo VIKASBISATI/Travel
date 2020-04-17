@@ -26,17 +26,20 @@ const UploadProductPage=(props)=> {
     const uploadImages = (newImages) => {
         setImages(newImages);
     }
-    const productData = {
-        writer: props.user.userData ? props.user.userData._id: "",
-        title: title,
-        description: description,
-        price: price,
-        images: Images,
-        continent: continent,
-    }
     const submitForm = (e) => {
         e.preventDefault();
-        Axios.post('api/product/uploadProduct', productData).then((res)=>{
+        if(!title || !description || !price || !continent || !Images) {
+            alert("fill all the fields");
+        }
+        const productData = {
+            writer: props.user.userData ? props.user.userData._id: "",
+            title: title,
+            description: description,
+            price: price,
+            images: Images,
+            continent: continent,
+        }
+        Axios.post('/api/products/uploadProduct', productData).then((res)=>{
             if(res.data.success){
                 alert('product uploaded successfully');
                 props.history.push("/");

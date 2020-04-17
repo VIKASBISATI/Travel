@@ -30,7 +30,7 @@ router.post("/uploadImage", auth, (req, res) => {
 });
 
 router.post("/uploadProduct", auth, (req, res) => {
-    const product = new Product(req.body);
+    const product = new Products(req.body);
 
     product.save((err) => {
         if (err) return res.status(400).json({ success: false, err });
@@ -38,6 +38,16 @@ router.post("/uploadProduct", auth, (req, res) => {
             success: true
         });
     });
+});
+
+router.get("/getProducts", auth, (req, res) => {
+    Products.find({},(err, products)=>{
+        if(err) return res.status(400).json({ success: false, err});
+        return res.status(200).json({
+            success: true,
+            productData: products
+        })
+    })
 });
 
 module.exports = router;
