@@ -40,12 +40,23 @@ router.post("/uploadProduct", auth, (req, res) => {
     });
 });
 
-router.get("/getProducts", auth, (req, res) => {
-    Products.find({},(err, products)=>{
+router.post("/getProducts", auth, (req, res) => {
+    let order = req.body.order ? req.body.order : "desc";
+    let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+    let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+    let skip = parseInt(req.body.skip);
+
+    Products.find()
+        .populate('writer')
+        .sort([[sortBy, order]])
+        .skip(skip)
+        .limit(limit)
+        .exec((err, products)=>{
         if(err) return res.status(400).json({ success: false, err});
         return res.status(200).json({
             success: true,
-            productData: products
+            productData: products,
+            postSize: products.length
         })
     })
 });

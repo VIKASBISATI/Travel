@@ -4,7 +4,7 @@ function ImageSlider(props) {
   return (
     <div>
       <Carousel autoplay>
-        {props.images.map((pic, index) => {
+        {props.images && props.images.map((pic, index) => {
           return (
             <div key={index}>
               <img

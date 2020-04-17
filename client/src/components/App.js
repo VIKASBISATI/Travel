@@ -1,13 +1,13 @@
-import React, { Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from "react-router-dom";
 import Auth from "../hoc/auth";
 // pages for this product
-import LandingPage from "./views/LandingPage/LandingPage.js";
-import LoginPage from "./views/LoginPage/LoginPage.js";
-import RegisterPage from "./views/RegisterPage/RegisterPage.js";
-import NavBar from "./views/NavBar/NavBar";
-import Footer from "./views/Footer/Footer"
-import UploadProductPage from './views/UploadProductPage/uploadProductPage'
+const LandingPage = lazy(() => import("./views/LandingPage/LandingPage.js"))
+const LoginPage  = lazy(() => import("./views/LoginPage/LoginPage.js"));
+const RegisterPage = lazy(() => import("./views/RegisterPage/RegisterPage.js"));
+const NavBar = lazy(() => import("./views/NavBar/NavBar"));
+const Footer = lazy(() => import("./views/Footer/Footer"));
+const UploadProductPage = lazy(() => import("./views/UploadProductPage/uploadProductPage"));
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
