@@ -3,6 +3,7 @@ import Axios from "axios";
 import { Icon, Button, Col, Card, Row } from "antd";
 import ImageSlider from "../../utils/imageSlider";
 import "./LandingPageCss.css";
+import LandingPageShimmer from "../../shimmers/landingPageShimmer"
 const { Meta } = Card;
 const Loader = () => <div>Loading...</div>;
 function LandingPage() {
@@ -60,11 +61,14 @@ function LandingPage() {
               <Icon type="rocket" />>
             </h2>
           </div>
-          <div class="loader">
+          <LandingPageShimmer 
+          len={8}
+          />
+          {/* <div class="loader">
             <div class="circle"></div>
             <div class="circle"></div>
             <div class="circle"></div>
-          </div>
+          </div> */}
         </div>
       ) : (
         <div style={{ width: "75%", margin: "3rem auto" }}>
