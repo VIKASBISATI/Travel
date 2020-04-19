@@ -97,5 +97,23 @@ router.post("/getProducts", (req, res) => {
       });
   }
 });
+router.get("/products_by_id", (req, res) => {
+  console.log("prodcut",req.query.id)
+  let type = req.query.type;
+  let productIds = req.query.id;
+  if (type === "array") {
+      let ids = req.query.id.split(",");
+      productIds = [];
+      productIds = ids.map((id)=>{
+        return id;
+      })
+  }
+  Products.find({ '_id': { $in: productIds } })
+  .populate("writer")
+  .exec((err,product)=>{
+      if (err) return res.status(400).send(err);
+      return res.status(200).send(product);
+  });
+});
 
 module.exports = router;

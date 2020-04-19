@@ -8,6 +8,8 @@ const RegisterPage = lazy(() => import("./views/RegisterPage/RegisterPage.js"));
 const NavBar = lazy(() => import("./views/NavBar/NavBar"));
 const Footer = lazy(() => import("./views/Footer/Footer"));
 const UploadProductPage = lazy(() => import("./views/UploadProductPage/uploadProductPage"));
+const DetailedProductPage = lazy(() => import("./views/DetailedProductPage/DetailedProductPage"));
+const CartPage = lazy(() => import("./views/CartPage/cartPage"));
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -22,6 +24,8 @@ function App() {
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           <Route exact path="/product/upload" component={Auth(UploadProductPage, true)} />
+          <Route exact path="/product/:productId" component={Auth(DetailedProductPage, null)} />
+          <Route exact path="/user/cart" component={Auth(CartPage, true)} />
         </Switch>
       </div>
       <Footer />
