@@ -40,13 +40,22 @@ router.post("/uploadProduct", auth, (req, res) => {
     });
 });
 
-router.post("/getProducts", auth, (req, res) => {
+router.post("/getProducts", (req, res) => {
     let order = req.body.order ? req.body.order : "desc";
     let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
     let limit = req.body.limit ? parseInt(req.body.limit) : 100;
     let skip = parseInt(req.body.skip);
+    let findArgs = {};
+    for(let key in req.body.filters) {
+        if(req.body.filters[key].length > 0){
+        if(key === "price") {
 
-    Products.find()
+        }else {
+            findArgs[key] = req.body.filters[key];
+        }
+    }
+    }
+    Products.find(findArgs)
         .populate('writer')
         .sort([[sortBy, order]])
         .skip(skip)
@@ -56,7 +65,8 @@ router.post("/getProducts", auth, (req, res) => {
         return res.status(200).json({
             success: true,
             productData: products,
-            postSize: products.length
+            postSize: products.length,
+            checkedContinents: findArgs,
         })
     })
 });

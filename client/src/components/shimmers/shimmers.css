@@ -5,12 +5,18 @@
   border: 1px solid #ddd;
   margin: 10px;
 }
-.inner-card {
+.collapse-header {
+  width: 100%;
+  height: 3rem;
+  background: #fff;
+  margin: 10px;
+}
+.generic-skeleton{
   animation-duration: 1s;
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  animation-name: cardShimmer;
+  animation-name: genericShimmer;
   width: 100%;
   height: 100%;
   position: relative;
@@ -24,7 +30,7 @@
   );
   background-repeat: no-repeat;
 }
-@keyframes cardShimmer {
+@keyframes genericShimmer {
   0% {
     background-position: -468px 0;
   }
