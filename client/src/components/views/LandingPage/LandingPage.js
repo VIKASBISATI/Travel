@@ -6,7 +6,8 @@ import "./LandingPageCss.css";
 import LandingPageShimmer from "../../shimmers/landingPageShimmer";
 import CheckBox from "./Sections/checkbox";
 import RadioBox from "./Sections/RadioBox";
-import {continentList, price} from './Sections/Datas'
+import { continentList, price } from "./Sections/Datas";
+import SearchFeature from "./Sections/SearchFeature";
 
 const { Meta } = Card;
 function LandingPage() {
@@ -15,12 +16,15 @@ function LandingPage() {
   const [Limit] = useState(8);
   const [PostSize, setPostSize] = useState(0);
   const [Load, setLoad] = useState(false);
+  const [SearchTerms, setSearchTerms] = useState("")
   const [Filters, setfilters] = useState({
     continent: [],
     price: []
   });
   const getProducts = query => {
-    setLoad(true);
+    if(!query.searchTerm){
+      setLoad(true);
+    }
     Axios.post("/api/products/getProducts", query).then(res => {
       if (res.data.success) {
         if (query.loadMore) {
@@ -30,7 +34,9 @@ function LandingPage() {
           setfilters(res.data.checkedContinents);
         }
         setPostSize(res.data.postSize);
-        setLoad(false);
+        if(!query.searchTerm){
+          setLoad(false);
+        }
       } else {
         alert("failed to get the products");
         setLoad(false);
@@ -74,20 +80,37 @@ function LandingPage() {
     getProducts(query);
     setSkip(0);
   };
-  const handlePrice = (value) => {
+  const handlePrice = value => {
     const data = price;
     let array = [];
-    
-  }
+    for (let key in data) {
+      if (data[key]._id === parseInt(value, 10)) {
+        array = data[key].array;
+      }
+    }
+    return array;
+  };
   const handleFilters = (filters, category) => {
     const newFilters = { ...Filters };
     newFilters[category] = filters;
     if (category === "price") {
       let priceValues = handlePrice(filters);
+      newFilters[category] = priceValues;
     }
     showFilteredResults(newFilters);
     setfilters(newFilters);
   };
+  const upadateSearchTerms = (newSearchTerms) => {
+    const query = {
+      skip: 0,
+      limit: Limit,
+      filters: Filters,
+      searchTerm: newSearchTerms
+    };
+    setSkip(0);
+    setSearchTerms(newSearchTerms);
+    getProducts(query);
+  }
   return (
     <>
       {Load ? (
@@ -118,15 +141,17 @@ function LandingPage() {
             </Col>
             <Col lg={12} xs={24}>
               <RadioBox
-                handleFilters={filters =>
-                  handleFilters(filters, "price")
-                }
+                handleFilters={filters => handleFilters(filters, "price")}
                 filterProps={Filters}
                 list={price}
               />
             </Col>
           </Row>
-
+          <div style={{display:"flex", justifyContent:"flex-end", margin:"1rem auto"}}>
+          <SearchFeature 
+          upadateSearchTerms = {upadateSearchTerms}
+          />
+          </div>
           {productsData.length === 0 ? (
             <div
               style={{
